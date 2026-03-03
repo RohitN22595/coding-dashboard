@@ -22,7 +22,7 @@ const ACCEPTED_ID = 3;
 
 export default function CompilerPage() {
     const [langId, setLangId] = useState<LangId>(71); // default: Python
-    const [code, setCode] = useState(LANGUAGES[2].placeholder);
+    const [code, setCode] = useState<string>(LANGUAGES[2].placeholder);
     const [stdin, setStdin] = useState("");
     const [output, setOutput] = useState("");
     const [loading, setLoading] = useState(false);
