@@ -22,7 +22,7 @@ type Judge0Result = {
 // ─────────────────────────────────────────────────────────────────────────────
 export default function CompilerPage() {
     const [langId, setLangId] = useState<LangId>(71);
-    const [code, setCode] = useState(LANGUAGES[1].placeholder);
+    const [code, setCode] = useState<string>(LANGUAGES[1].placeholder);
     const [stdin, setStdin] = useState("");
     const [output, setOutput] = useState("");
     const [loading, setLoading] = useState(false);
