@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useCoins } from "@/lib/useCoins";
 import {
     Clock, AlertTriangle, Lightbulb, Coins, Trophy, RefreshCw,
     Star, Calendar, Eye, RotateCcw, Grid3X3, ChevronDown, X,
@@ -55,7 +56,7 @@ const HINT_COST = 10;
 const SOLUTION_COST = 30;
 const DAILY_BONUS = 20;
 
-const LS_COINS = "sudoku_coins";
+// coins are managed by the shared useCoins hook (games_coins key)
 const LS_LEADERBOARD = "sudoku_leaderboard";
 const LS_SAVE = "sudoku_save";
 
@@ -261,7 +262,7 @@ export default function SudokuPage() {
     // ── Game state ────────────────────────────────────────────────────────────
     const [mistakes, setMistakes] = useState(0);
     const [hintsUsed, setHintsUsed] = useState(0);
-    const [coins, setCoins] = useState(0);
+    const { coins, addCoins, spendCoins } = useCoins();
     const [selected, setSelected] = useState<[number, number] | null>(null);
     const [wrongCells, setWrongCells] = useState<Set<string>>(new Set());
     const [gameOver, setGameOver] = useState(false);
@@ -288,9 +289,7 @@ export default function SudokuPage() {
         if (initialized.current) return;
         initialized.current = true;
 
-        // Coins
-        const storedCoins = parseInt(localStorage.getItem(LS_COINS) || "0", 10);
-        setCoins(isNaN(storedCoins) ? 0 : storedCoins);
+        // Coins are handled by useCoins hook automatically
 
         // Leaderboard
         try {
@@ -362,12 +361,7 @@ export default function SudokuPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [grid, timerSecs, mistakes, hintsUsed, wrongCells]);
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // PERSIST COINS
-    // ─────────────────────────────────────────────────────────────────────────
-    useEffect(() => {
-        if (initialized.current) localStorage.setItem(LS_COINS, String(coins));
-    }, [coins]);
+    // Coins are persisted automatically by useCoins hook
 
     // ─────────────────────────────────────────────────────────────────────────
     // GAME ACTIONS
@@ -503,8 +497,7 @@ export default function SudokuPage() {
             breakdown.push(`Daily challenge bonus: +${DAILY_BONUS} coins`);
         }
 
-        const newCoins = coins + earned;
-        setCoins(newCoins);
+        addCoins(earned);
         setEarnedCoins(earned);
         setCoinBreakdown(breakdown);
 
@@ -540,8 +533,7 @@ export default function SudokuPage() {
 
         // Check cost
         if (hintsUsed >= FREE_HINTS) {
-            if (coins < HINT_COST) return;
-            setCoins((c) => c - HINT_COST);
+            if (!spendCoins(HINT_COST)) return;
         }
 
         // Find empty cells
@@ -566,8 +558,7 @@ export default function SudokuPage() {
 
     function handleShowSolution() {
         if (gameOver || solved) return;
-        if (coins < SOLUTION_COST) return;
-        setCoins((c) => c - SOLUTION_COST);
+        if (!spendCoins(SOLUTION_COST)) return;
         setGrid(cloneGrid(solution));
         setTimerRunning(false);
         setSolved(true);
