@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
     Code2, CalendarDays, BarChart2, Home, Sun, Moon, Menu, X,
-    Layers, NotebookPen, Trophy, CheckSquare, User, BookOpen,
+    Layers, NotebookPen, Trophy, CheckSquare, User, BookOpen, Grid3X3,
 } from "lucide-react";
 import { toggleTheme, getStoredTheme, applyStoredTheme } from "@/lib/theme";
 
@@ -19,6 +19,7 @@ const NAV_LINKS = [
     { href: "/notepad", label: "Notepad", icon: NotebookPen },
     { href: "/todo", label: "Todo", icon: CheckSquare },
     { href: "/profile", label: "Profile", icon: User },
+    { href: "/games/sudoku", label: "Sudoku", icon: Grid3X3 },
 ] as const;
 
 export default function Navbar() {
@@ -49,8 +50,8 @@ export default function Navbar() {
                                 key={href}
                                 href={href}
                                 className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${isActive(href)
-                                        ? "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300"
-                                        : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
+                                    ? "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300"
+                                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
                                     }`}
                             >
                                 <Icon size={13} />
@@ -86,8 +87,8 @@ export default function Navbar() {
                             key={href}
                             href={href}
                             className={`flex items-center gap-1.5 px-2 py-2 rounded-lg text-xs font-medium transition-colors ${isActive(href)
-                                    ? "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300"
-                                    : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                                ? "bg-indigo-100 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300"
+                                : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
                                 }`}
                         >
                             <Icon size={13} />
