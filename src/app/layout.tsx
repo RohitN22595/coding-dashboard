@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+// 1. IMPORT THE ANALYTICS COMPONENT
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -12,7 +14,6 @@ export const metadata: Metadata = {
   keywords: ["IIT Guwahati", "Competitive Programming", "Full Stack", "Next.js"],
 };
 
-/** Runs before React hydration — applies stored dark class with no flash */
 function ThemeScript() {
   const code = `(function(){try{var t=localStorage.getItem('darkMode');if(t==='true')document.documentElement.classList.add('dark');else document.documentElement.classList.remove('dark');}catch(e){}})()`;
   return <script dangerouslySetInnerHTML={{ __html: code }} />;
@@ -28,6 +29,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
+        
+        {/* 2. ADD THE COMPONENT HERE */}
+        <Analytics />
       </body>
     </html>
   );
